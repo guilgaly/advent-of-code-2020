@@ -1,5 +1,5 @@
-use itertools::Itertools;
-use reduce::Reduce;
+use common::itertools::Itertools;
+use common::reduce::Reduce;
 use std::collections::HashSet;
 
 static INPUT: &str = include_str!("input");

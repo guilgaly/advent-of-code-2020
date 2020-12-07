@@ -1,5 +1,5 @@
-use lazy_static::lazy_static;
-use regex::Regex;
+use common::lazy_static::lazy_static;
+use common::regex::Regex;
 
 static INPUT: &str = include_str!("input");
 

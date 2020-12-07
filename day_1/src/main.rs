@@ -1,4 +1,4 @@
-use itertools::Itertools;
+use common::itertools::Itertools;
 use std::error::Error;
 use std::num::ParseIntError;
 use std::time::Instant;
