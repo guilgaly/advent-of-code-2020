@@ -1,7 +1,7 @@
-use std::str::FromStr;
-use std::ops::{Deref, DerefMut};
 use std::collections::HashSet;
 use std::convert::TryFrom;
+use std::ops::{Deref, DerefMut};
+use std::str::FromStr;
 
 pub fn execute_program(program: &Program) -> Result<ProgramTermination, String> {
     let end = (program.len() - 1) as i64;

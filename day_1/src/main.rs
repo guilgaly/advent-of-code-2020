@@ -1,7 +1,6 @@
 use common::itertools::Itertools;
 use std::error::Error;
 use std::num::ParseIntError;
-use std::time::Instant;
 
 static INPUT: &str = include_str!("input");
 
@@ -9,9 +8,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let expenses: Vec<i32> = parse_expenses(INPUT)?;
 
     let execute = |name: &str, f: fn(&[i32]) -> Option<i32>| {
-        let before = Instant::now();
-        let maybe_result = f(&expenses);
-        println!("{} elapsed time: {:.2?}", name, before.elapsed());
+        let maybe_result = common::time_execution(name, || f(&expenses));
         match maybe_result {
             Some(result) => println!("{} result: {}", name, result),
             None => println!("{} result not found", name),
