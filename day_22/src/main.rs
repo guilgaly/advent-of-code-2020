@@ -17,7 +17,7 @@ fn main() -> Result<(), String> {
     Ok(())
 }
 
-fn play_combat(deck_1: VecDeque<u64>, deck_2: VecDeque<u64>) -> u64 {
+fn play_combat(deck_1: VecDeque<usize>, deck_2: VecDeque<usize>) -> usize {
     let mut deck_1 = deck_1;
     let mut deck_2 = deck_2;
 
@@ -38,11 +38,11 @@ fn play_combat(deck_1: VecDeque<u64>, deck_2: VecDeque<u64>) -> u64 {
     count_score(&winning_deck)
 }
 
-fn play_recursive_combat(deck_1: VecDeque<u64>, deck_2: VecDeque<u64>) -> (Winner, u64) {
+fn play_recursive_combat(deck_1: VecDeque<usize>, deck_2: VecDeque<usize>) -> (Winner, usize) {
     let mut deck_1 = deck_1;
     let mut deck_2 = deck_2;
 
-    let mut previous_decks: HashSet<(VecDeque<u64>, VecDeque<u64>)> = HashSet::new();
+    let mut previous_decks: HashSet<(VecDeque<usize>, VecDeque<usize>)> = HashSet::new();
 
     loop {
         let state = (deck_1.clone(), deck_2.clone());
@@ -54,7 +54,7 @@ fn play_recursive_combat(deck_1: VecDeque<u64>, deck_2: VecDeque<u64>) -> (Winne
         let card_1 = deck_1.pop_front().unwrap();
         let card_2 = deck_2.pop_front().unwrap();
 
-        let winner = if deck_1.len() as u64 >= card_1 && deck_2.len() as u64 >= card_2 {
+        let winner = if deck_1.len() >= card_1 && deck_2.len() >= card_2 {
             play_recursive_combat(copy_top_n_cards(&deck_1, card_1), copy_top_n_cards(&deck_2, card_2)).0
         } else {
             if card_1 > card_2 {
@@ -83,24 +83,24 @@ fn play_recursive_combat(deck_1: VecDeque<u64>, deck_2: VecDeque<u64>) -> (Winne
     }
 }
 
-fn count_score(winning_deck: &VecDeque<u64>) -> u64 {
+fn count_score(winning_deck: &VecDeque<usize>) -> usize {
     winning_deck
         .iter()
         .rev()
         .enumerate()
-        .fold(0, |acc, (i, card)| acc + (i as u64 + 1) * *card)
+        .fold(0, |acc, (i, card)| acc + (i + 1) * *card)
 }
 
-fn copy_top_n_cards(deck: &VecDeque<u64>, n: u64) -> VecDeque<u64> {
-    deck.iter().take(n as usize).copied().collect()
+fn copy_top_n_cards(deck: &VecDeque<usize>, n: usize) -> VecDeque<usize> {
+    deck.iter().take(n).copied().collect()
 }
 
 /// Top card is at the beginning, bottom card at the end
-fn parse_deck(input: &str) -> Result<VecDeque<u64>, String> {
+fn parse_deck(input: &str) -> Result<VecDeque<usize>, String> {
     input
         .lines()
         .map(|line| {
-            line.parse::<u64>()
+            line.parse::<usize>()
                 .map_err(|e| format!("Cannot parse {}: {}", line, e))
         })
         .collect()
@@ -115,15 +115,15 @@ enum Winner {
 mod tests {
     use super::*;
 
-    fn deck(cards: &[u64]) -> VecDeque<u64> {
+    fn deck(cards: &[usize]) -> VecDeque<usize> {
         cards.iter().copied().collect::<VecDeque<_>>()
     }
 
-    fn deck_1() -> VecDeque<u64> {
+    fn deck_1() -> VecDeque<usize> {
         deck(&[9, 2, 6, 3, 1])
     }
 
-    fn deck_2() -> VecDeque<u64> {
+    fn deck_2() -> VecDeque<usize> {
         deck(&[5, 8, 4, 7, 10])
     }
 
